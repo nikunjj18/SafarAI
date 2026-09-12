@@ -234,6 +234,14 @@ export function userRoutes(app: Express, c: Context) {
         res.json({ accepted: false });
         return;
       }
+      // GPS fallback can be kilometres less accurate than the last fix.
+      // Keep that valid fix until another usable measurement arrives; do not
+      // refresh its timestamp or manufacture movement during an interruption.
+      if (previous?.source === 'browser' && previous.accuracy <= 150 && b.accuracy > 150) {
+        db.prepare('UPDATE users SET last_seen=? WHERE id=?').run(iso(), row.id);
+        res.json({ accepted: false, retainedPrevious: true });
+        return;
+      }
       db.prepare('UPDATE users SET telemetry=?,last_seen=? WHERE id=?').run(
         JSON.stringify({ ...b, source: 'browser' }),
         iso(),
