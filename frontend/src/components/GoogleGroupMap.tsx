@@ -260,7 +260,7 @@ export function GoogleGroupMap({
           .slice(0, 2),
         state === 'outside' || member.status === 'sos'
           ? 'outside'
-          : state !== 'inside' || (!data.demoMode && member.status === 'stale')
+          : state !== 'inside'
             ? 'stale'
             : member.role === 'leader'
               ? 'leader'
@@ -325,7 +325,10 @@ export function GoogleGroupMap({
       </div>
       {error && <p className="notice error">{error}</p>}
       {!data.demoMode && (
-        <p className="fine">Marker status uses reported location freshness and accuracy.</p>
+        <p className="fine">
+          Pin colours show recorded positions relative to 150 m. Open a pin to see its measurement
+          time.
+        </p>
       )}
       <p className="fine">
         {data.demoMode
