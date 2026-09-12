@@ -56,16 +56,11 @@ export function CopilotView({
       if (
         await act(async () => {
           reply = await api<ChatMessage>('/copilot/chat', 'POST', { message, language });
+          if (reply.action) await executeAction(reply.action);
           await load();
         })
       ) {
         setInput('');
-        if (reply?.action)
-          try {
-            await executeAction(reply.action);
-          } catch (e) {
-            setLoadError((e as Error).message);
-          }
       }
     } finally {
       sending.current = false;
@@ -141,7 +136,7 @@ export function CopilotView({
         <div ref={end} />
       </div>
       <div className="actions prompts">
-        {['Find my dynamic meeting point', 'Call my group leader', 'Show my leader on the map'].map(
+        {['Find my dynamic meeting point', 'Call my group leader', 'Send SOS to my group'].map(
           (p) => (
             <button
               key={p}

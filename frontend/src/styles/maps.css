@@ -250,12 +250,15 @@
 }
 @keyframes member-pulse {
   0% {
+    opacity: 1;
     box-shadow: 0 0 0 0 #e34d59aa;
   }
   70% {
+    opacity: 0.35;
     box-shadow: 0 0 0 17px #e34d5900;
   }
   100% {
+    opacity: 1;
     box-shadow: 0 0 0 0 #e34d5900;
   }
 }
@@ -340,7 +343,13 @@
 }
 .person-pin.outside {
   background: #e53e4f;
-  animation: none;
+  animation: member-pulse 1.6s ease-out infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .person-pin.outside {
+    animation: none;
+    outline: 5px solid #ef646466;
+  }
 }
 .person-pin.stale {
   background: #7c8790;

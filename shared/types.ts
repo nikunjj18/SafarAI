@@ -85,7 +85,7 @@ export interface MeetingPoint {
   active: boolean;
 }
 export interface ClientAction {
-  type: 'call' | 'map' | 'share_location' | 'stop_location';
+  type: 'call' | 'map' | 'share_location' | 'stop_location' | 'send_sos';
   href?: string;
   label: string;
 }

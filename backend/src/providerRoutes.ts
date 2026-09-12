@@ -126,6 +126,10 @@ export function providerRoutes(app: Express, c: Context) {
         const plan = await planAction(c, context, b.message);
         let action: ClientAction | undefined,
           actionText = '';
+        if (plan.action === 'send_sos') {
+          action = { type: 'send_sos', label: 'Send SOS to my group' };
+          actionText = 'Sending your SOS to your group. The app will confirm when it is saved.';
+        }
         if (plan.action === 'call_member' || plan.action === 'view_member') {
           const member = context.members.find((m) => m.id === plan.memberId);
           if (!member)
@@ -191,7 +195,15 @@ export function providerRoutes(app: Express, c: Context) {
               text:
                 language === 'en'
                   ? actionText
-                  : (await translateBatch(env, providers.fetcher, language, [actionText], 'en'))[0],
+                  : (
+                      await translateBatch(
+                        env,
+                        providers.fetcher,
+                        language,
+                        [actionText],
+                        'en',
+                      ).catch(() => [actionText])
+                    )[0],
               provider: env.AI_PROVIDER || 'groq',
             }
           : await providers.chat(context, history, b.message);

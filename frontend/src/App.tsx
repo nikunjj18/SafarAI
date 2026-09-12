@@ -98,7 +98,7 @@ function Workspace({ user, logout }: { user: User; logout: () => void }) {
     streamOpen = useRef(false);
   const seen = useRef<Set<string> | null>(null);
   const report = useCallback((message: string) => setError(message), []);
-  const { sharing, setSharing, locationStatus } = useLocation(
+  const { sharing, setSharing, locationStatus, requestLocation } = useLocation(
     user.id,
     report,
     !!user.profile.simulator,
@@ -323,6 +323,9 @@ function Workspace({ user, logout }: { user: User; logout: () => void }) {
               {locationStatus}
             </p>
           )}
+          {(!sharing || locationStatus) && !data.user.profile.simulator && (
+            <button onClick={requestLocation}>Share my location</button>
+          )}
           {error && (
             <div className="notice error" role="alert">
               {error}
@@ -418,9 +421,12 @@ function Workspace({ user, logout }: { user: User; logout: () => void }) {
                   busy={busy}
                   act={act}
                   executeAction={async (action) => {
-                    if (action.type === 'share_location') {
-                      await api('/telemetry/start', 'POST');
-                      setSharing(true);
+                    if (action.type === 'send_sos') {
+                      await api('/sos', 'POST', {});
+                      setNotice('SOS saved to your group feed.');
+                      await refresh();
+                    } else if (action.type === 'share_location') {
+                      requestLocation();
                       setTab('journey');
                     } else if (action.type === 'stop_location') {
                       setSharing(false);
