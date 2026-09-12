@@ -152,12 +152,6 @@ export function useLocation(userId: string, _report: (message: string) => void, 
           await api('/telemetry/start', 'POST');
           if (!active) return;
           ready = true;
-          if (!simulator)
-            watch = navigator.geolocation.watchPosition(
-              (p) => void sample(p),
-              () => void sample(),
-              { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 },
-            );
         } catch (e) {
           fail((e as Error).message + ' Retrying automatically.');
         } finally {
@@ -166,10 +160,29 @@ export function useLocation(userId: string, _report: (message: string) => void, 
       }
       if (ready) void sample();
     }
+    // Ask the browser as soon as sharing starts, without waiting on the backend.
+    // The browser alone chooses whether to display its native permission dialog.
+    const watchGps = () => {
+      if (simulator) return;
+      if (watch !== undefined) navigator.geolocation.clearWatch(watch);
+      watch = navigator.geolocation.watchPosition(
+        (p) => void sample(p),
+        (error) => {
+          if (error.code === 1)
+            fail('Location is blocked. Allow Location in this site’s browser settings.');
+          else void sample();
+        },
+        { enableHighAccuracy: true, maximumAge: 5000, timeout: 20000 },
+      );
+    };
+    watchGps();
     void tick();
     const timer = setInterval(() => void tick(), 15000);
     const resume = () => {
-      if (document.visibilityState === 'visible') void tick();
+      if (document.visibilityState === 'visible') {
+        watchGps();
+        void tick();
+      }
     };
     document.addEventListener('visibilitychange', resume);
     window.addEventListener('focus', resume);

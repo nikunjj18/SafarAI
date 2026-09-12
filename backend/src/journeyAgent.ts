@@ -124,16 +124,16 @@ export async function dynamicMeeting(
       try {
         await refreshSimulator(c, userFrom(row));
       } catch (e) {
-        if (c.env.DEMO_MODE !== 'true' || !t) throw e;
+        if (!t) throw e;
       }
     }
   }
   const data = snapshot(c, user),
     leader = data.members.find((m) => m.id === data.group.leaderId)?.telemetry;
-  if (!leader || (c.env.DEMO_MODE !== 'true' && !usableMeetingAnchor(leader)))
+  if (!leader)
     throw new HttpError(
       409,
-      'The leader must share a fresh location accurate to 150 metres before the agent can choose a meeting point.',
+      'The leader has not shared a location yet. Share it once to find a nearby meeting point.',
     );
   if (!c.env.GOOGLE_PLACES_API_KEY)
     throw new HttpError(
@@ -155,7 +155,15 @@ export async function dynamicMeeting(
     distanceMeters(previous.anchor, leader) < 50 &&
     distanceMeters(previous.meeting, leader) <= 600
   )
-    return { ...previous.meeting, distanceFromLeader: distanceMeters(previous.meeting, leader) };
+    return {
+      ...previous.meeting,
+      distanceFromLeader: distanceMeters(previous.meeting, leader),
+      selectionReason: !usableMeetingAnchor(leader)
+        ? 'Using the last recorded leader position (' +
+          leader.observedAt +
+          '). Confirm the destination with your leader.'
+        : previous.meeting.selectionReason,
+    };
   let jobs = running.get(c);
   if (!jobs) {
     jobs = new Map();
@@ -242,11 +250,7 @@ export async function dynamicMeeting(
           'The agent selected an unknown place. No meeting point was published.',
         );
       const latest = snapshot(c, user).members.find((m) => m.id === data.group.leaderId)?.telemetry;
-      if (
-        !latest ||
-        (c.env.DEMO_MODE !== 'true' && !usableMeetingAnchor(latest)) ||
-        distanceMeters(latest, chosen) > 600
-      )
+      if (!latest || distanceMeters(latest, chosen) > 600)
         throw new HttpError(
           409,
           'The leader moved while the agent was searching. Refresh to find a closer meeting point.',
@@ -286,8 +290,10 @@ export async function dynamicMeeting(
         source: 'Google Places',
         crowd: chosen.crowd,
         selectionReason:
-          (c.env.DEMO_MODE === 'true'
-            ? 'Meeting point around the saved leader position; not live GPS. '
+          (c.env.DEMO_MODE === 'true' || !usableMeetingAnchor(latest)
+            ? 'Meeting point around the last recorded leader position (' +
+              latest.observedAt +
+              '), not verified current GPS. Confirm the destination with your leader. '
             : '') +
           (latest.source === 'nokia-simulator'
             ? 'Nokia simulator: meeting around the reported test-area centre, with ' +

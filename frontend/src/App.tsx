@@ -324,14 +324,7 @@ function Workspace({ user, logout }: { user: User; logout: () => void }) {
             </p>
           )}
           {(!sharing || locationStatus) && !data.user.profile.simulator && (
-            <div className="notice">
-              <strong>Share your location with your group</strong>
-              <p>
-                Tap below, then choose Allow in your browser. If access is already allowed, no new
-                permission popup is needed.
-              </p>
-              <button onClick={requestLocation}>Allow location access</button>
-            </div>
+            <button onClick={requestLocation}>Allow location access</button>
           )}
           {data.members.some(
             (m) => m.telemetry && Date.now() - Date.parse(m.telemetry.observedAt) > 120000,
