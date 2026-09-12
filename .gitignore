@@ -1,0 +1,17 @@
+node_modules/
+dist/
+data/
+coverage/
+.env
+.env.*
+!.env.example
+*.log
+*.tmp
+*.db*
+*.zip
+*.mp4
+*.mov
+*.webm
+*.avi
+*.mkv
+.DS_Store

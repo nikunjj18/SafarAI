@@ -1,0 +1,21 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "module": "ESNext",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "moduleResolution": "bundler",
+    "jsx": "react-jsx",
+    "jsxImportSource": "@safarai/i18n",
+    "paths": {
+      "@safarai/i18n/*": ["./frontend/src/i18n/*"]
+    },
+    "strict": true,
+    "skipLibCheck": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "types": ["node", "vite/client"],
+    "allowImportingTsExtensions": true
+  },
+  "include": ["frontend", "backend", "shared", "tests"]
+}
