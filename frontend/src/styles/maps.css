@@ -1,0 +1,356 @@
+.safety-summary {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  padding: 25px 28px;
+  border: 1px solid #34d39955;
+  border-radius: 20px;
+  background: linear-gradient(115deg, #0b684326, #38bb8610);
+  margin: 22px 0;
+}
+.safety-summary h2 {
+  font-size: 24px;
+  margin: 0 0 7px;
+}
+.safety-summary p {
+  margin: 0;
+}
+.safety-summary .eyebrow {
+  margin-bottom: 8px;
+}
+.safety-summary > svg {
+  flex-shrink: 0;
+  color: #36c68a;
+}
+.safety-summary > button {
+  margin-inline-start: auto;
+  flex-shrink: 0;
+}
+.safety-summary.alert {
+  border-color: #ef646477;
+  background: #ef646411;
+}
+.safety-summary.alert > svg {
+  color: #ef6464;
+}
+.safety-summary.pending {
+  border-color: var(--border);
+}
+.member-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.member-row {
+  display: flex;
+  align-items: center;
+  gap: 15px;
+  padding: 18px;
+  border: 1px solid var(--border);
+  border-radius: 15px;
+  background: var(--input);
+}
+.member-identity {
+  flex: 1;
+  min-width: 0;
+}
+.member-identity h3 {
+  margin: 0 0 4px;
+  overflow-wrap: anywhere;
+}
+.member-row .avatar {
+  width: 46px;
+  height: 46px;
+  flex-shrink: 0;
+  border-radius: 50%;
+  background: #1aa57022;
+  color: var(--accent);
+  display: grid;
+  place-items: center;
+}
+.member-row .avatar.attention,
+.member-row .avatar.sos {
+  background: #ef646422;
+  color: #ef6464;
+}
+.member-call {
+  border-radius: 30px;
+}
+.member-row details {
+  position: relative;
+}
+.member-row details button {
+  position: absolute;
+  right: 0;
+  z-index: 2;
+}
+.member-row summary {
+  cursor: pointer;
+  list-style: none;
+}
+.map-stage {
+  position: relative;
+  border-radius: 20px;
+  overflow: hidden;
+  border: 1px solid var(--border);
+}
+.map-stage .live-map {
+  height: 560px;
+  border: 0;
+  border-radius: 0;
+  z-index: 0;
+  background: #e7ede7;
+}
+.map-overlay {
+  position: absolute;
+  top: 18px;
+  left: 18px;
+  right: 65px;
+  background: #fffffff2;
+  color: #213b30;
+  box-shadow: 0 5px 25px #163b2020;
+  border-radius: 15px;
+  padding: 15px;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  z-index: 400;
+}
+.map-overlay > span:last-child {
+  margin-left: auto;
+  font-size: 12px;
+}
+.map-live-dot {
+  width: 8px;
+  height: 8px;
+  background: #17ae75;
+  border-radius: 50%;
+}
+.map-buttons {
+  position: absolute;
+  right: 16px;
+  bottom: 65px;
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  z-index: 400;
+}
+.map-buttons button {
+  background: white;
+  color: #203e2f;
+  box-shadow: 0 2px 8px #0002;
+  border: 0;
+}
+.map-legend {
+  position: absolute;
+  bottom: 22px;
+  left: 15px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 13px;
+  background: #fffffff2;
+  border-radius: 20px;
+  padding: 10px 15px;
+  font-size: 11px;
+  z-index: 400;
+  color: #139461;
+}
+.map-legend span:first-child {
+  color: #397adc;
+}
+.map-legend span:last-child {
+  color: #d84951;
+}
+.person-pin {
+  display: grid;
+  place-items: center;
+  width: 42px;
+  height: 42px;
+  background: #17a875;
+  color: white;
+  font-weight: 750;
+  border: 3px solid white;
+  border-radius: 50%;
+  box-shadow: 0 3px 10px #0004;
+  font-size: 13px;
+}
+.person-pin.leader {
+  background: #357be5;
+  box-shadow:
+    0 0 0 6px #357be522,
+    0 3px 10px #0004;
+}
+.person-pin.stale {
+  background: #7f8d90;
+  opacity: 0.7;
+}
+.person-pin.outside {
+  background: #e34d59;
+  animation: member-pulse 1.6s ease-out infinite;
+}
+.person-popup {
+  min-width: 170px;
+  color: #193b2c;
+}
+.person-popup strong {
+  font-size: 16px;
+}
+.person-popup p {
+  margin: 8px 0;
+  font-size: 12px;
+}
+.person-popup small {
+  display: block;
+  font-size: 10px;
+  color: #607166;
+}
+.person-popup a.map-call {
+  display: block;
+  margin-top: 13px;
+  padding: 9px 15px;
+  border-radius: 10px;
+  background: #167d56;
+  color: white;
+  text-align: center;
+  font-weight: 700;
+  text-decoration: none;
+}
+.location-strip {
+  display: flex;
+  align-items: center;
+  gap: 20px;
+  justify-content: space-between;
+  padding-bottom: 18px;
+}
+.location-strip p {
+  font-size: 12px;
+  color: var(--muted);
+  margin: 4px 0 0;
+}
+.location-strip button {
+  flex-shrink: 0;
+}
+.boundary-editor {
+  display: flex;
+  gap: 10px;
+  align-items: center;
+  flex-wrap: wrap;
+  padding-top: 20px;
+}
+.boundary-editor .field {
+  max-width: 210px;
+  margin-bottom: 0;
+}
+.boundary-editor input {
+  width: 100%;
+}
+.boundary-editor .notice {
+  width: 100%;
+  margin: 0;
+}
+@keyframes member-pulse {
+  0% {
+    box-shadow: 0 0 0 0 #e34d59aa;
+  }
+  70% {
+    box-shadow: 0 0 0 17px #e34d5900;
+  }
+  100% {
+    box-shadow: 0 0 0 0 #e34d5900;
+  }
+}
+@media (prefers-reduced-motion: reduce) {
+  .person-pin.outside {
+    animation: none;
+    outline: 5px solid #ef646466;
+  }
+}
+@media (max-width: 700px) {
+  .safety-summary {
+    padding: 20px;
+    gap: 12px;
+    flex-wrap: wrap;
+  }
+  .safety-summary h2 {
+    font-size: 19px;
+  }
+  .safety-summary > div {
+    flex: 1;
+    min-width: 180px;
+  }
+  .safety-summary > button {
+    margin: 0;
+  }
+  .member-row {
+    padding: 12px;
+    gap: 10px;
+    flex-wrap: wrap;
+  }
+  .member-row .badge {
+    font-size: 10px;
+  }
+  .member-identity {
+    min-width: 110px;
+  }
+  .map-stage .live-map {
+    height: 470px;
+  }
+  .map-overlay {
+    left: 10px;
+    right: 10px;
+    top: 10px;
+    padding: 12px;
+    font-size: 12px;
+  }
+  .map-overlay > span:last-child {
+    font-size: 10px;
+  }
+  .map-legend {
+    right: 10px;
+    left: 10px;
+    bottom: 12px;
+    justify-content: center;
+    gap: 8px;
+    font-size: 9px;
+  }
+  .location-strip {
+    align-items: flex-start;
+    flex-direction: column;
+    gap: 10px;
+  }
+  .map-buttons {
+    bottom: 70px;
+  }
+}
+
+/* Compact teardrop markers preserve the actual location at the tip. */
+.person-pin {
+  width: 28px;
+  height: 28px;
+  border-radius: 50% 50% 50% 0;
+  transform: rotate(-45deg);
+  border-width: 2px;
+  font-size: 10px;
+}
+.person-pin > span {
+  transform: rotate(45deg);
+}
+.person-pin.leader {
+  background: #17a875;
+}
+.person-pin.outside {
+  background: #e53e4f;
+  animation: none;
+}
+.person-pin.stale {
+  background: #7c8790;
+}
+.home-sos {
+  margin-top: 10px;
+}
+.person-popup .nearby-member {
+  display: flex;
+  gap: 12px;
+  align-items: center;
+  margin-top: 10px;
+}
