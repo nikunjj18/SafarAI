@@ -4,7 +4,7 @@ import { MapPin, Phone, Shield, Users, TriangleAlert, Radio, Battery } from 'luc
 import QRCode from 'qrcode';
 import { api } from '../lib/api.ts';
 import { Card, Empty, Input, stamp, statusLabel, nav, type Act } from '../components/ui.tsx';
-import { boundaryState } from '../../../shared/boundary.ts';
+import { displayedBoundaryState as boundaryState } from '../../../shared/boundary.ts';
 import type { Snapshot, Member } from '../../../shared/types.ts';
 import hero from '../assets/hero.jpg';
 type Props = { data: Snapshot; busy: boolean; act: Act };
@@ -462,19 +462,22 @@ export function GroupView({ data, busy, act }: Props) {
         )}
       </Card>
       <Card title="Group updates">
-        {data.bulletins.length ? (
-          data.bulletins.slice(0, 5).map((b) => (
-            <article className="feed-item" key={b.id}>
-              <span className={'dot ' + b.kind} />
-              <div>
-                <strong data-localize-content="true">{b.title}</strong>
-                <p data-localize-content="true">{b.message}</p>
-                <small>
-                  <time translate="no">{stamp(b.createdAt)}</time>
-                </small>
-              </div>
-            </article>
-          ))
+        {data.bulletins.some((b) => !(b.kind === 'risk' && b.title.endsWith(': stale'))) ? (
+          data.bulletins
+            .filter((b) => !(b.kind === 'risk' && b.title.endsWith(': stale')))
+            .slice(0, 5)
+            .map((b) => (
+              <article className="feed-item" key={b.id}>
+                <span className={'dot ' + b.kind} />
+                <div>
+                  <strong data-localize-content="true">{b.title}</strong>
+                  <p data-localize-content="true">{b.message}</p>
+                  <small>
+                    <time translate="no">{stamp(b.createdAt)}</time>
+                  </small>
+                </div>
+              </article>
+            ))
         ) : (
           <Empty>Your group messages will appear here.</Empty>
         )}

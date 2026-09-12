@@ -103,7 +103,7 @@ export function evaluate(db: DB, group: Group) {
     db.prepare(
       'INSERT INTO risk_states VALUES (?,?) ON CONFLICT(user_id) DO UPDATE SET status=excluded.status',
     ).run(member.id, member.status);
-    if (['attention', 'stale'].includes(member.status))
+    if (member.status === 'attention')
       record(db, group.id, 'bulletin', {
         kind: 'risk',
         title: member.name + ': ' + member.status,

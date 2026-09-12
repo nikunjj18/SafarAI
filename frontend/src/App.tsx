@@ -324,7 +324,22 @@ function Workspace({ user, logout }: { user: User; logout: () => void }) {
             </p>
           )}
           {(!sharing || locationStatus) && !data.user.profile.simulator && (
-            <button onClick={requestLocation}>Share my location</button>
+            <div className="notice">
+              <strong>Share your location with your group</strong>
+              <p>
+                Tap below, then choose Allow in your browser. If access is already allowed, no new
+                permission popup is needed.
+              </p>
+              <button onClick={requestLocation}>Allow location access</button>
+            </div>
+          )}
+          {data.members.some(
+            (m) => m.telemetry && Date.now() - Date.parse(m.telemetry.observedAt) > 120000,
+          ) && (
+            <p className="fine" role="status">
+              Last recorded positions stay visible while location updates resume. Their timestamps
+              show when they were measured.
+            </p>
           )}
           {error && (
             <div className="notice error" role="alert">

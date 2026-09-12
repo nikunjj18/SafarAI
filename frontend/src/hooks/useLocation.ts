@@ -13,6 +13,18 @@ export function useLocation(userId: string, _report: (message: string) => void, 
     }
   });
   const requestLocation = () => {
+    // Request permission directly from the click, before any network round trip.
+    if (!simulator && navigator.geolocation)
+      navigator.geolocation.getCurrentPosition(
+        () => report('Location allowed. Updating your group…'),
+        (error) =>
+          report(
+            error.code === 1
+              ? 'Location is blocked. Open this site’s browser permissions, allow Location, then try again.'
+              : 'Waiting for a GPS fix. Your last recorded position remains visible.',
+          ),
+        { enableHighAccuracy: true, maximumAge: 0, timeout: 15000 },
+      );
     setSharing(true);
     setRestart((v) => v + 1);
   };

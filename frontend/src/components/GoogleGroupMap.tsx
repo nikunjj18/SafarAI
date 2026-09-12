@@ -1,7 +1,7 @@
 import { coordinateDistance } from '../../../shared/boundary.ts';
 import { useEffect, useRef, useState, useSyncExternalStore } from 'react';
 import { useLocale } from '../i18n/context.ts';
-import { boundaryState } from '../../../shared/boundary.ts';
+import { displayedBoundaryState as boundaryState } from '../../../shared/boundary.ts';
 import { stamp } from './ui.tsx';
 import type { Snapshot } from '../../../shared/types.ts';
 export type DynamicMeeting = {

@@ -4,6 +4,7 @@ import 'leaflet/dist/leaflet.css';
 import { useLocale } from '../i18n/context.ts';
 import { statusLabel, stamp } from './ui.tsx';
 import type { Snapshot } from '../../../shared/types.ts';
+import { displayedBoundaryState } from '../../../shared/boundary.ts';
 export function LiveMap({
   data,
   onPick,
@@ -49,9 +50,7 @@ export function LiveMap({
     g.clearLayers();
     const area = L.latLngBounds([]);
     const leader = data.members.find((p) => p.id === data.group.leaderId)?.telemetry;
-    const anchor =
-      data.group.anchor ||
-      (leader && Date.now() - Date.parse(leader.observedAt) < 120000 ? leader : null);
+    const anchor = leader || data.group.anchor;
     if (anchor) {
       const circle = L.circle([anchor.lat, anchor.lng], {
         radius: data.group.radius,
@@ -67,17 +66,19 @@ export function LiveMap({
       if (!member.telemetry) continue;
       const t = member.telemetry,
         fresh = Date.now() - Date.parse(t.observedAt) < 120000;
-      const uncertainty = t.accuracy + (data.group.anchor ? 0 : leader?.accuracy || 0);
-      const outside =
-        fresh &&
-        !!anchor &&
-        member.distance !== null &&
-        member.distance - uncertainty > data.group.radius;
+      const state = displayedBoundaryState(member, data);
+      const outside = state === 'outside';
       const red = outside || member.status === 'sos';
       const icon = document.createElement('div');
       icon.className =
         'person-pin ' +
-        (red ? 'outside' : !fresh ? 'stale' : member.role === 'leader' ? 'leader' : '');
+        (red
+          ? 'outside'
+          : state === 'unknown'
+            ? 'stale'
+            : member.role === 'leader'
+              ? 'leader'
+              : '');
       const initials = document.createElement('span');
       initials.textContent = member.name
         .trim()
