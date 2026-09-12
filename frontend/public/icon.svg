@@ -1,0 +1,40 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512" width="512" height="512">
+  <defs>
+    <linearGradient id="bgGrad" x1="0%" y1="0%" x2="100%" y2="100%">
+      <stop offset="0%" stop-color="#059669"/>
+      <stop offset="50%" stop-color="#047857"/>
+      <stop offset="100%" stop-color="#064e3b"/>
+    </linearGradient>
+    <linearGradient id="shieldGrad" x1="0%" y1="0%" x2="0%" y2="100%">
+      <stop offset="0%" stop-color="#34d399"/>
+      <stop offset="100%" stop-color="#10b981"/>
+    </linearGradient>
+    <filter id="shadow" x="-10%" y="-10%" width="120%" height="120%">
+      <feDropShadow dx="0" dy="8" stdDeviation="16" flood-color="#000" flood-opacity="0.5"/>
+    </filter>
+  </defs>
+  <!-- Background rounded rectangle -->
+  <rect width="512" height="512" rx="128" fill="#0c0a09"/>
+  <rect x="16" y="16" width="480" height="480" rx="112" fill="url(#bgGrad)" stroke="#34d399" stroke-width="4" stroke-opacity="0.3"/>
+  
+  <!-- Outer Shield contour -->
+  <path d="M 256 90 L 370 140 C 370 270 256 360 256 390 C 256 360 142 270 142 140 Z" 
+        fill="#064e3b" 
+        stroke="url(#shieldGrad)" 
+        stroke-width="12" 
+        stroke-linejoin="round"
+        filter="url(#shadow)"/>
+
+  <!-- Inner stylized S letter -->
+  <text x="256" y="275" 
+        font-family="-apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif" 
+        font-size="160" 
+        font-weight="900" 
+        fill="#ffffff" 
+        text-anchor="middle" 
+        dominant-baseline="central">S</text>
+
+  <!-- Signal / Pulse waves -->
+  <circle cx="256" cy="140" r="14" fill="#34d399"/>
+  <circle cx="256" cy="140" r="28" fill="none" stroke="#6ee7b7" stroke-width="4" opacity="0.6"/>
+</svg>
