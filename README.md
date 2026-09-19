@@ -14,7 +14,7 @@ Pilgrimage group coordination with network location, multilingual AI and borrowe
 
 **MENA Open Gateway Hackathon · Pilgrimage theme**
 
-[Live application](https://safar-ai-beta.vercel.app/) · [Demo Video](https://youtu.be/OpGdHulCvDI)  [Architecture](docs/ARCHITECTURE.md) · [API reference](docs/API.md) · [Configuration](docs/CONFIGURATION.md)
+[Live application](https://safar-ai-beta.vercel.app/) · [Demo Video](https://youtu.be/OpGdHulCvDI) ·  [Architecture](docs/ARCHITECTURE.md) · [API reference](docs/API.md) · [Configuration](docs/CONFIGURATION.md)
 
 </div>
 
